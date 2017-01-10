@@ -68,6 +68,7 @@ type Options = {
   reporter: Reporter,
   resetCache: boolean,
   roots: Array<string>,
+  sourceExts: Array<string>,
   transformCode: TransformCode,
   useWatchman: boolean,
   watch: boolean,
@@ -81,7 +82,7 @@ class DependencyGraph extends EventEmitter {
   _hasteMapError: ?Error;
   _helpers: DependencyGraphHelpers;
   _moduleCache: ModuleCache;
-
+  
   _loading: Promise<void>;
 
   constructor(opts: Options) {
@@ -98,7 +99,7 @@ class DependencyGraph extends EventEmitter {
 
     const mw = this._opts.maxWorkers;
     this._haste = new JestHasteMap({
-      extensions: this._opts.extensions.concat(this._opts.assetExts),
+      extensions: this._opts.extensions.concat(this._opts.assetExts).concat(this._opts.sourceExts),
       forceNodeFilesystemAPI: this._opts.forceNodeFilesystemAPI,
       ignorePattern: {test: this._opts.ignoreFilePath},
       maxWorkers: typeof mw === 'number' && mw >= 1 ? mw : getMaxWorkers(),
@@ -146,7 +147,7 @@ class DependencyGraph extends EventEmitter {
 
       this._hasteMap = new HasteMap({
         files: hasteFSFiles,
-        extensions: this._opts.extensions,
+        extensions: this._opts.extensions.concat(this._opts.sourceExts),
         moduleCache: this._moduleCache,
         preferNativePlatform: this._opts.preferNativePlatform,
         helpers: this._helpers,
@@ -240,6 +241,7 @@ class DependencyGraph extends EventEmitter {
         hasteMap: this._hasteMap,
         helpers: this._helpers,
         moduleCache: this._moduleCache,
+        sourceExts: this._opts.sourceExts,
         platform,
         platforms: this._opts.platforms,
         preferNativePlatform: this._opts.preferNativePlatform,

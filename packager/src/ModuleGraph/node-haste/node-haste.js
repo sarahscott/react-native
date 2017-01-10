@@ -33,6 +33,7 @@
  type ResolveOptions = {|
   assetExts: Extensions,
   extraNodeModules: {[id: string]: string},
+  sourceExts: Extensions,
   transformedFiles: {[path: Path]: TransformedFile},
 |};
 
@@ -60,14 +61,14 @@
     filePath => hasteFS.closest(filePath, 'package.json'),
     getTransformedFile,
   );
-   const hasteMap = new HasteMap({
-     extensions: ['js', 'json'],
-     files,
-     helpers,
-     moduleCache,
-     platforms,
-     preferNativePlatform: true,
-   });
+  const hasteMap = new HasteMap({
+    extensions: options.sourceExts.concat(['json']),
+    files,
+    helpers,
+    moduleCache,
+    platforms,
+    preferNativePlatform: true,
+  });
 
    const hasteMapBuilt = hasteMap.build();
    const resolutionRequests = {};

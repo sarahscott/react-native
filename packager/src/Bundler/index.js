@@ -97,6 +97,7 @@ type Options = {
   providesModuleNodeModules?: Array<string>,
   reporter: Reporter,
   resetCache: boolean,
+  sourceExts: Array<string>,
   transformModulePath?: string,
   transformTimeoutInterval: ?number,
   watch: boolean,
@@ -185,6 +186,8 @@ class Bundler {
       providesModuleNodeModules: opts.providesModuleNodeModules,
       reporter: opts.reporter,
       resetCache: opts.resetCache,
+      sourceExts: opts.sourceExts,
+      transformCacheKey,
       transformCode:
         (module, code, transformCodeOptions) => this._transformer.transformFile(
           module.path,

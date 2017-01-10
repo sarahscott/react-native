@@ -44,6 +44,8 @@ type Options = {
   providesModuleNodeModules?: Array<string>,
   reporter: Reporter,
   resetCache: boolean,
+  sourceExts: Array<string>,
+  transformCacheKey: string,
   transformCode: TransformCode,
   watch?: boolean,
 };
@@ -81,6 +83,8 @@ class Resolver {
       reporter: opts.reporter,
       resetCache: opts.resetCache,
       roots: opts.projectRoots,
+      sourceExts: opts.sourceExts,
+      transformCacheKey: opts.transformCacheKey,
       transformCode: opts.transformCode,
       useWatchman: true,
       watch: opts.watch || false,
